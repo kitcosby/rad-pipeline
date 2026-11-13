@@ -1,0 +1,289 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.local/rad-pipeline/finding-v0.1.schema.json",
+  "title": "RAD Pipeline Finding",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "finding_id",
+    "project_id",
+    "cycle_id",
+    "title",
+    "description",
+    "classifications",
+    "status",
+    "origin",
+    "expected_behavior",
+    "affected_artifacts",
+    "created_at"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.1"
+    },
+    "finding_id": {
+      "type": "string",
+      "pattern": "^FND-[0-9]{8}-[0-9]{3,}$"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cycle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 240
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "severity": {
+      "enum": [
+        "critical",
+        "high",
+        "medium",
+        "low",
+        "informational",
+        "unknown"
+      ],
+      "default": "unknown"
+    },
+    "confidence": {
+      "enum": [
+        "confirmed",
+        "strong",
+        "tentative",
+        "unknown"
+      ],
+      "default": "unknown"
+    },
+    "reproducibility": {
+      "enum": [
+        "reproducible",
+        "intermittent",
+        "not_reproduced",
+        "not_tested"
+      ],
+      "default": "not_tested"
+    },
+    "classifications": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "implementation",
+          "requirement",
+          "architecture_system_analysis",
+          "ceg_model_or_coverage",
+          "test_harness",
+          "documentation_or_description",
+          "environment_or_configuration",
+          "security",
+          "inconclusive"
+        ]
+      }
+    },
+    "status": {
+      "enum": [
+        "open",
+        "triaged",
+        "waiting_for_decision",
+        "in_progress",
+        "fixed_pending_verification",
+        "verified",
+        "accepted_risk",
+        "superseded"
+      ]
+    },
+    "origin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "run_id"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "test",
+            "review",
+            "monitor",
+            "manual_report",
+            "other"
+          ]
+        },
+        "run_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "test_id": {
+          "type": "string"
+        },
+        "stage_id": {
+          "type": "string"
+        },
+        "evidence_ref": {
+          "type": "string"
+        }
+      }
+    },
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "repository": {
+          "type": "string"
+        },
+        "branch": {
+          "type": "string"
+        },
+        "commit": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "build_id": {
+          "type": "string"
+        },
+        "deployment_id": {
+          "type": "string"
+        },
+        "environment": {
+          "type": "string"
+        }
+      }
+    },
+    "expected_behavior": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "statement",
+        "authority"
+      ],
+      "properties": {
+        "statement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "authority": {
+          "enum": [
+            "approved_requirement",
+            "approved_decision",
+            "unresolved",
+            "not_applicable"
+          ]
+        },
+        "requirement_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "decision_ref": {
+          "type": "string"
+        }
+      }
+    },
+    "observed_behavior": {
+      "type": "string"
+    },
+    "affected_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "artifact_id",
+          "relationship"
+        ],
+        "properties": {
+          "artifact_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "relationship": {
+            "enum": [
+              "contradicts",
+              "stale",
+              "missing",
+              "implements",
+              "verifies",
+              "models",
+              "describes",
+              "depends_on",
+              "unknown"
+            ]
+          },
+          "revision": {
+            "type": "string"
+          },
+          "content_hash": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "proposed_disposition": {
+      "type": "string"
+    },
+    "decision_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "owner": {
+      "type": "string"
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "baseline_ref": {
+          "type": "string"
+        },
+        "test_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "verified_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
