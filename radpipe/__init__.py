@@ -2,6 +2,7 @@
 
 WP2: contracts and evidence store (validate, evidence, redact).
 WP3: orchestration core (statemachine, policy, executor, scheduler).
+WP4: project adapters (radpipe.adapters — BibleApp QA adapter).
 """
 
 from . import evidence, executor, policy, redact, scheduler, statemachine, validate
