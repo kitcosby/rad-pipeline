@@ -1,0 +1,1 @@
+{"artifact_id":"bibleapp-api-variant-search","content_hash":"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef","note":"Endpoint behavior contradicts REQ-VS-014 as recorded in the staging build.","relationship":"contradicts","revision":"staging-2026-11-11","schema_version":"0.1"}
